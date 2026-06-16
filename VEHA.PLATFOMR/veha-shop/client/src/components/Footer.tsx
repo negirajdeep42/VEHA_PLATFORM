@@ -34,7 +34,7 @@ export default function Footer() {
             <Link to="/house" className={col}>Shipping</Link>
             <Link to="/house" className={col}>Returns</Link>
             <Link to="/house" className={col}>Jewellery care</Link>
-            <Link to="/house#contact" className={col}>Help</Link>
+            <Link to="/admin" className={col}>Admin Dashboard</Link>
           </div>
         </div>
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-7">

@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from '../app/hooks';
 import { selectCartCount } from '../features/cart/cartSlice';
+import { selectWishlistItems } from '../features/wishlist/wishlistSlice';
+import { SearchOverlay, WishlistDrawer, AccountDrawer, MobileMenu } from './Drawers';
 
 const navLink = 'text-[11.5px] tracking-[0.18em] uppercase text-cream hover:text-gold transition-colors';
 const ANNOUNCE = [
@@ -26,6 +28,14 @@ function Announce() {
 
 export default function Header() {
   const count = useAppSelector(selectCartCount);
+  const wishlistItems = useAppSelector(selectWishlistItems);
+  const wishlistCount = wishlistItems.length;
+
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <>
       <Announce />
@@ -42,21 +52,23 @@ export default function Header() {
 
           <nav className="hidden lg:flex gap-9">
             <Link to="/shop" className={navLink}>Shop</Link>
-            <Link to="/shop" className={navLink}>Bestsellers</Link>
             <Link to="/collections" className={navLink}>Collections</Link>
             <Link to="/house" className={navLink}>The House</Link>
-            <Link to="/house" className={navLink}>Contact</Link>
+            <Link to="/house#contact" className={navLink}>Contact</Link>
           </nav>
 
           <div className="flex items-center gap-5">
-            <button className="hidden sm:flex text-cream hover:text-gold transition-colors" aria-label="Search">
+            <button onClick={() => setSearchOpen(true)} className="hidden sm:flex text-cream hover:text-gold transition-colors" aria-label="Search">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
             </button>
-            <button className="hidden sm:flex text-cream hover:text-gold transition-colors" aria-label="Account">
+            <button onClick={() => setAccountOpen(true)} className="hidden sm:flex text-cream hover:text-gold transition-colors" aria-label="Account">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" /></svg>
             </button>
-            <button className="hidden sm:flex text-cream hover:text-gold transition-colors" aria-label="Wishlist">
+            <button onClick={() => setWishlistOpen(true)} className="hidden sm:flex relative text-cream hover:text-gold transition-colors" aria-label="Wishlist">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="w-5 h-5"><path d="M12 20s-7-4.4-9.3-9C1 7.7 3 4.5 6.2 4.5c2 0 3.3 1.2 4.1 2.4l1.7 2 1.7-2c.8-1.2 2.1-2.4 4.1-2.4 3.2 0 5.2 3.2 3.5 6.5C19 15.6 12 20 12 20Z" /></svg>
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 min-w-[14px] h-3.5 px-0.5 rounded-full bg-gradient-to-br from-gold-light to-gold-mid text-noir text-[8px] font-semibold flex items-center justify-center">{wishlistCount}</span>
+              )}
             </button>
             <Link to="/cart" className="relative text-cream hover:text-gold transition-colors" aria-label="Cart">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
@@ -65,12 +77,24 @@ export default function Header() {
               </svg>
               <span className="absolute -top-2 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-gradient-to-br from-gold-light to-gold-mid text-noir text-[9px] font-semibold flex items-center justify-center">{count}</span>
             </Link>
-            <button className="lg:hidden text-cream hover:text-gold transition-colors" aria-label="Menu">
+            <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden text-cream hover:text-gold transition-colors" aria-label="Menu">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
             </button>
           </div>
         </div>
       </header>
+
+      {/* Overlays / Drawers */}
+      <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <WishlistDrawer isOpen={wishlistOpen} onClose={() => setWishlistOpen(false)} />
+      <AccountDrawer isOpen={accountOpen} onClose={() => setAccountOpen(false)} />
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        onOpenSearch={() => setSearchOpen(true)}
+        onOpenWishlist={() => setWishlistOpen(true)}
+        onOpenAccount={() => setAccountOpen(true)}
+      />
     </>
   );
 }

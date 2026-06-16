@@ -47,7 +47,6 @@ export default function Home() {
     return () => clearInterval(t);
   }, []);
 
-  const go = (dir: number) => setSlide((s) => (s + dir + SLIDES.length) % SLIDES.length);
   const s = SLIDES[slide];
 
   return (
@@ -59,13 +58,7 @@ export default function Home() {
         <Jhumka className="pointer-events-none select-none absolute -right-10 top-12 w-[230px] md:w-[320px] opacity-[0.16] blur-[1px] scale-x-[-1]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(217,184,92,0.10),transparent_55%)]" />
 
-        {/* carousel arrows */}
-        <button onClick={() => go(-1)} aria-label="Previous" className="absolute left-3 md:left-7 top-1/2 -translate-y-1/2 z-20 text-cream-soft hover:text-gold transition-colors">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" className="w-7 h-7"><path d="M15 5l-7 7 7 7" /></svg>
-        </button>
-        <button onClick={() => go(1)} aria-label="Next" className="absolute right-3 md:right-7 top-1/2 -translate-y-1/2 z-20 text-cream-soft hover:text-gold transition-colors">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" className="w-7 h-7"><path d="M9 5l7 7-7 7" /></svg>
-        </button>
+
 
         <div className="relative z-10 max-w-[1240px] mx-auto px-7 text-center py-24 md:py-32">
           <svg viewBox="0 0 100 56" className="w-9 h-[22px] mx-auto mb-6" aria-hidden>
@@ -99,8 +92,8 @@ export default function Home() {
       {/* CATEGORY STRIP */}
       <section className="max-w-[1240px] mx-auto px-7 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[['Rings', 'rings'], ['Earrings', 'earrings'], ['Necklaces', 'necklaces'], ['Bracelets', 'bracelets']].map(([label]) => (
-            <Link key={label} to="/shop" className="border border-line hover:border-gold-mid transition-colors py-9 text-center group">
+          {[['Rings', 'rings'], ['Earrings', 'earrings'], ['Necklaces', 'necklaces'], ['Bracelets', 'bracelets']].map(([label, catKey]) => (
+            <Link key={label} to={`/shop?category=${catKey}`} className="border border-line hover:border-gold-mid transition-colors py-9 text-center group">
               <span className="font-edi text-2xl text-cream group-hover:text-gold-light transition-colors">{label}</span>
               <span className="block text-[10px] tracking-[0.2em] uppercase text-cream-dim mt-1">Explore &rarr;</span>
             </Link>
@@ -108,17 +101,106 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FEATURED EDITORIALS */}
+      <section className="max-w-[1240px] mx-auto px-7 pb-20">
+        <div className="grid md:grid-cols-2 gap-7">
+          <Link to="/shop?search=bridal" className="relative overflow-hidden group min-h-[340px] flex items-end border border-line-strong hover:border-gold transition-colors">
+            <img 
+              src="/bridal_banner_editorial.png" 
+              alt="Bridal Collection" 
+              className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-noir via-noir/40 to-transparent" />
+            <div className="relative z-10 p-8">
+              <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-gold-mid mb-2">Featured Edit</p>
+              <h3 className="font-disp text-3xl text-cream tracking-[0.05em] uppercase mb-1">Bridal Collection</h3>
+              <p className="text-xs text-cream-soft max-w-[320px] mb-4">Complete bridal sets, traditional necklaces, and heirloom pieces.</p>
+              <span className="inline-block text-[10px] font-medium tracking-[0.2em] uppercase border-b border-gold pb-0.5 text-gold group-hover:text-gold-light transition-colors">Explore Now &rarr;</span>
+            </div>
+          </Link>
+
+          <Link to="/shop?sort=featured" className="relative overflow-hidden group min-h-[340px] flex items-end border border-line-strong hover:border-gold transition-colors">
+            <img 
+              src="/gift_banner_editorial.png" 
+              alt="Gift Store" 
+              className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-noir via-noir/40 to-transparent" />
+            <div className="relative z-10 p-8">
+              <p className="text-[10px] font-semibold tracking-[0.3em] uppercase text-gold-mid mb-2">Gift Store</p>
+              <h3 className="font-disp text-3xl text-cream tracking-[0.05em] uppercase mb-1">Give the Gift of Luxury</h3>
+              <p className="text-xs text-cream-soft max-w-[320px] mb-4">Curated jewelry and timepieces inside signature luxury packaging.</p>
+              <span className="inline-block text-[10px] font-medium tracking-[0.2em] uppercase border-b border-gold pb-0.5 text-gold group-hover:text-gold-light transition-colors">Shop Gifts &rarr;</span>
+            </div>
+          </Link>
+        </div>
+      </section>
+
       {/* BESTSELLERS */}
       <section className="max-w-[1240px] mx-auto px-7 pb-20">
         <div className="text-center mb-10">
           <p className="text-[11px] tracking-[0.34em] uppercase text-gold-mid mb-3">Loved by many</p>
-          <h2 className="font-disp text-3xl md:text-4xl tracking-[0.08em] bg-gradient-to-b from-gold-light to-gold-dark bg-clip-text text-transparent">Bestsellers</h2>
+          <h2 className="font-disp text-3xl md:text-4xl tracking-[0.08em] bg-gradient-to-b from-gold-light to-gold-dark bg-clip-text text-transparent uppercase">Bestsellers</h2>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {featured.map((p) => <ProductCard key={p.id} p={p} />)}
         </div>
         <div className="text-center mt-12">
           <Link to="/shop" className="border border-line-strong text-gold text-[11px] tracking-[0.22em] uppercase px-9 py-4 hover:border-gold hover:text-gold-light transition-colors">View all jewellery</Link>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS */}
+      <section className="max-w-[1240px] mx-auto px-7 pb-24 border-t border-line/30 pt-20">
+        <div className="text-center mb-12">
+          <p className="text-[11px] tracking-[0.34em] uppercase text-gold-mid mb-3">Patron Stories</p>
+          <h2 className="font-disp text-3xl md:text-4xl tracking-[0.08em] bg-gradient-to-b from-gold-light to-gold-dark bg-clip-text text-transparent uppercase">What Our Customers Say</h2>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            {
+              name: 'Priya Sharma',
+              loc: 'Mumbai',
+              quote: 'Perfect bridal set! My entire family was in awe of the intricate handiwork. The custom gold polishing looks breathtaking.',
+              stars: 5,
+              img: 'https://i.pravatar.cc/80?img=5'
+            },
+            {
+              name: 'Aditya Mehta',
+              loc: 'Delhi',
+              quote: 'Bought the luxury watch edit as a wedding gift. The signature black box packaging is incredibly premium, and shipping was extremely fast.',
+              stars: 5,
+              img: 'https://i.pravatar.cc/80?img=11'
+            },
+            {
+              name: 'Ananya Rao',
+              loc: 'Bangalore',
+              quote: 'The craftsmanship on the everyday band ring is superb. Extremely comfortable fit, and it keeps its brilliant polish even with daily wear.',
+              stars: 5,
+              img: 'https://i.pravatar.cc/85?img=9'
+            }
+          ].map((t, i) => (
+            <div key={i} className="border border-line bg-[#0E0E10] p-6 flex flex-col justify-between hover:border-gold transition-colors duration-300">
+              <div>
+                {/* Stars */}
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: t.stars }).map((_, sIdx) => (
+                    <svg key={sIdx} viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 text-gold-mid">
+                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="font-edi italic text-lg text-cream/90 leading-relaxed mb-6">"{t.quote}"</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <img src={t.img} alt={t.name} className="w-10 h-10 rounded-full border border-line-strong object-cover" />
+                <div>
+                  <h4 className="text-xs font-semibold uppercase tracking-wider text-cream">{t.name}</h4>
+                  <span className="text-[10px] uppercase tracking-widest text-cream-dim">{t.loc}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </>

@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const VALUES = [
   { t: 'BIS hallmarked', d: 'Every gold piece is independently assayed and stamped, so its purity is certified \u2014 never a guess.' },
@@ -8,6 +9,20 @@ const VALUES = [
 ];
 
 export default function House() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const elem = document.getElementById(location.hash.substring(1));
+      if (elem) {
+        setTimeout(() => {
+          elem.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [location]);
   return (
     <>
       {/* intro */}

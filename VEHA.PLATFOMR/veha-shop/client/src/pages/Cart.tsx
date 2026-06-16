@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectCartItems, selectSubtotal, setQty, removeItem } from '../features/cart/cartSlice';
+import { selectCartItems, selectSubtotal, setQty, removeItem, applyPromoCode, removePromoCode, selectPromoCode, selectDiscountRate } from '../features/cart/cartSlice';
 import { Render } from '../lib/renders';
 import { formatINR } from '../lib/format';
 
@@ -10,10 +10,12 @@ const FREE_OVER = 999;
 export default function Cart() {
   const items = useAppSelector(selectCartItems);
   const subtotal = useAppSelector(selectSubtotal);
+  const promoCode = useAppSelector(selectPromoCode);
+  const discountRate = useAppSelector(selectDiscountRate);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [rate, setRate] = useState(0);
-  const [promoMsg, setPromoMsg] = useState('Have a code? Try VEHA10.');
+
+  const [promoMsg, setPromoMsg] = useState(promoCode ? `Code ${promoCode} applied \u2014 10% off.` : 'Have a code? Try VEHA10.');
   const [promoErr, setPromoErr] = useState(false);
 
   if (items.length === 0) {
@@ -26,14 +28,25 @@ export default function Cart() {
     );
   }
 
-  const discount = Math.round(subtotal * rate);
+  const discount = Math.round(subtotal * discountRate);
   const shipping = subtotal - discount >= FREE_OVER ? 0 : 49;
   const total = subtotal - discount + shipping;
 
   const applyPromo = (code: string) => {
-    if (code.trim().toUpperCase() === 'VEHA10') { setRate(0.1); setPromoErr(false); setPromoMsg('Code VEHA10 applied \u2014 10% off.'); }
-    else if (!code.trim()) { setPromoErr(true); setPromoMsg('Enter a promo code first.'); }
-    else { setRate(0); setPromoErr(true); setPromoMsg('That code isn\u2019t valid.'); }
+    const cleanCode = code.trim().toUpperCase();
+    if (cleanCode === 'VEHA10') {
+      dispatch(applyPromoCode({ code: 'VEHA10', rate: 0.1 }));
+      setPromoErr(false);
+      setPromoMsg('Code VEHA10 applied \u2014 10% off.');
+    } else if (!code.trim()) {
+      dispatch(removePromoCode());
+      setPromoErr(true);
+      setPromoMsg('Enter a promo code first.');
+    } else {
+      dispatch(removePromoCode());
+      setPromoErr(true);
+      setPromoMsg('That code isn\u2019t valid.');
+    }
   };
 
   return (
@@ -74,7 +87,7 @@ export default function Cart() {
           <div className="flex justify-between py-2.5 text-sm text-cream-soft"><span>Shipping</span><span className={shipping === 0 ? 'text-gold uppercase text-xs tracking-wide' : 'text-cream'}>{shipping === 0 ? 'Free' : formatINR(shipping)}</span></div>
 
           <div className="flex gap-2 my-4 py-4 border-y border-line">
-            <input id="promo" placeholder="Promo code" className="flex-1 bg-white/5 border border-line-strong text-cream text-xs uppercase tracking-wide px-3.5 outline-none focus:border-gold" />
+            <input id="promo" defaultValue={promoCode || ''} placeholder="Promo code" className="flex-1 bg-white/5 border border-line-strong text-cream text-xs uppercase tracking-wide px-3.5 outline-none focus:border-gold" />
             <button onClick={() => applyPromo((document.getElementById('promo') as HTMLInputElement).value)} className="border border-line-strong text-gold text-[11px] tracking-[0.12em] uppercase px-4 py-3 hover:border-gold hover:text-gold-light">Apply</button>
           </div>
           <p className={`text-[11.5px] mb-3 ${promoErr ? 'text-[#d98a6a]' : 'text-gold'}`}>{promoMsg}</p>

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectCartItems, selectSubtotal, clearCart } from '../features/cart/cartSlice';
+import { selectCartItems, selectSubtotal, selectPromoCode, selectDiscountRate, clearCart } from '../features/cart/cartSlice';
 import { useCreateOrderMutation } from '../features/api/apiSlice';
+import { selectCurrentUser, addOrderToHistory } from '../features/auth/authSlice';
 import { Render } from '../lib/renders';
 import { formatINR } from '../lib/format';
 
@@ -13,17 +14,44 @@ type Field = (typeof REQUIRED)[number];
 export default function Checkout() {
   const items = useAppSelector(selectCartItems);
   const subtotal = useAppSelector(selectSubtotal);
+  const promoCode = useAppSelector(selectPromoCode);
+  const discountRate = useAppSelector(selectDiscountRate);
+  const user = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const [createOrder, { isLoading }] = useCreateOrderMutation();
 
-  const [form, setForm] = useState<Record<Field, string>>({ name: '', email: '', phone: '', address: '', city: '', state: '', pincode: '' });
+  const [form, setForm] = useState<Record<Field, string>>({
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    address: user?.address || '',
+    city: user?.city || '',
+    state: user?.state || '',
+    pincode: user?.pincode || '',
+  });
+
+  useEffect(() => {
+    if (user) {
+      setForm({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        address: user.address || '',
+        city: user.city || '',
+        state: user.state || '',
+        pincode: user.pincode || '',
+      });
+    }
+  }, [user]);
+
   const [errors, setErrors] = useState<Partial<Record<Field, boolean>>>({});
   const [payment, setPayment] = useState<'upi' | 'card' | 'cod'>('upi');
   const [orderId, setOrderId] = useState<string | null>(null);
   const [apiError, setApiError] = useState('');
 
-  const shipping = subtotal >= FREE_OVER ? 0 : 49;
-  const total = subtotal + shipping;
+  const discount = Math.round(subtotal * discountRate);
+  const shipping = subtotal - discount >= FREE_OVER ? 0 : 49;
+  const total = subtotal - discount + shipping;
   const set = (f: Field, v: string) => { setForm((s) => ({ ...s, [f]: v })); setErrors((e) => ({ ...e, [f]: false })); };
 
   const placeOrder = async () => {
@@ -36,9 +64,22 @@ export default function Checkout() {
       const result = await createOrder({
         customer: form,
         paymentMethod: payment,
+        promoCode: promoCode || undefined,
         items: items.map((i) => ({ productId: i.productId, variant: i.variant, qty: i.qty })),
       }).unwrap();
+      
       setOrderId(result.id);
+      dispatch(addOrderToHistory({
+        id: result.id,
+        subtotal: result.subtotal,
+        discount: result.discount,
+        shipping: result.shipping,
+        total: result.total,
+        status: result.status,
+        date: new Date().toISOString(),
+        items: [...items],
+        customer: form,
+      }));
       dispatch(clearCart());
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (e: any) {
@@ -112,6 +153,7 @@ export default function Checkout() {
             </div>
           ))}
           <div className="flex justify-between py-2.5 text-sm text-cream-soft mt-2"><span>Subtotal</span><span className="text-cream">{formatINR(subtotal)}</span></div>
+          {discount > 0 && <div className="flex justify-between py-2.5 text-sm text-cream-soft"><span>Discount</span><span className="text-gold">&minus;{formatINR(discount)}</span></div>}
           <div className="flex justify-between py-2.5 text-sm text-cream-soft"><span>Shipping</span><span className={shipping === 0 ? 'text-gold uppercase text-xs' : 'text-cream'}>{shipping === 0 ? 'Free' : formatINR(shipping)}</span></div>
           <div className="flex justify-between items-baseline py-4 border-t border-line-strong mb-5"><span className="text-[13px] tracking-[0.14em] uppercase text-cream">Total</span><span className="text-2xl font-medium text-gold">{formatINR(total)}</span></div>
           {apiError && <p className="text-[#d98a6a] text-xs mb-3">{apiError}</p>}

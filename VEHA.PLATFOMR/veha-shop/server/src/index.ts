@@ -1,17 +1,23 @@
 import 'dotenv/config';
 import express from 'express';
+import { clerkMiddleware } from '@clerk/express';
 import { applySecurity } from './middleware/security';
-import { initSchema } from './db';
+import { connectDB } from './db';
 import { productsRouter } from './routes/products';
 import { ordersRouter } from './routes/orders';
+import { authRouter } from './routes/auth';
+import { promotionsRouter } from './routes/promotions';
 
 const app = express();
 applySecurity(app);
-initSchema();
+app.use(clerkMiddleware());
+connectDB();
 
 app.get('/api/health', (_req, res) => res.json({ ok: true }));
+app.use('/api/auth', authRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/orders', ordersRouter);
+app.use('/api/promotions', promotionsRouter);
 
 // Central error handler (keeps internal details out of responses).
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

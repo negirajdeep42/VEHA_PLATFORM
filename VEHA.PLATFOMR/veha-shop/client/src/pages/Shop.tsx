@@ -8,11 +8,13 @@ const cats = ['all', 'rings', 'earrings', 'necklaces', 'bracelets'] as const;
 export default function Shop() {
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get('category') ?? 'all';
+  const search = searchParams.get('search') ?? '';
   const [sort, setSort] = useState('featured');
 
   const { data: products, isLoading, isError } = useGetProductsQuery({
     category: category === 'all' ? undefined : category,
     sort,
+    search: search || undefined,
   });
 
   const pickCategory = (c: string) => {
@@ -23,10 +25,20 @@ export default function Shop() {
   return (
     <div className="max-w-[1240px] mx-auto px-7 py-12">
       <header className="text-center mb-10">
-        <p className="text-[11px] tracking-[0.34em] uppercase text-gold-mid mb-3">The collection</p>
+        <p className="text-[11px] tracking-[0.34em] uppercase text-gold-mid mb-3">
+          {search ? 'Search results' : 'The collection'}
+        </p>
         <h1 className="font-disp text-4xl md:text-5xl tracking-[0.08em] bg-gradient-to-b from-gold-light to-gold-dark bg-clip-text text-transparent capitalize">
-          {category === 'all' ? 'Shop all' : category}
+          {search ? `"${search}"` : (category === 'all' ? 'Shop all' : category)}
         </h1>
+        {search && (
+          <button
+            onClick={() => setSearchParams({})}
+            className="text-[11px] tracking-[0.16em] uppercase text-cream-soft hover:text-gold mt-3 underline"
+          >
+            Clear search
+          </button>
+        )}
       </header>
 
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-5 mb-8">

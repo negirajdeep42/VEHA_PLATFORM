@@ -12,8 +12,16 @@ function load(): CartItem[] {
   }
 }
 
-interface CartState { items: CartItem[]; }
-const initialState: CartState = { items: load() };
+interface CartState {
+  items: CartItem[];
+  promoCode: string | null;
+  discountRate: number;
+}
+const initialState: CartState = {
+  items: load(),
+  promoCode: null,
+  discountRate: 0,
+};
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -31,11 +39,23 @@ const cartSlice = createSlice({
     removeItem(state, action: PayloadAction<string>) {
       state.items = state.items.filter((i) => i.id !== action.payload);
     },
-    clearCart(state) { state.items = []; },
+    applyPromoCode(state, action: PayloadAction<{ code: string; rate: number }>) {
+      state.promoCode = action.payload.code;
+      state.discountRate = action.payload.rate;
+    },
+    removePromoCode(state) {
+      state.promoCode = null;
+      state.discountRate = 0;
+    },
+    clearCart(state) {
+      state.items = [];
+      state.promoCode = null;
+      state.discountRate = 0;
+    },
   },
 });
 
-export const { addItem, setQty, removeItem, clearCart } = cartSlice.actions;
+export const { addItem, setQty, removeItem, applyPromoCode, removePromoCode, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;
 
 // Selectors
@@ -45,4 +65,6 @@ export const selectCartCount = (s: RootState) =>
   s.cart.items.reduce((n, i) => n + i.qty, 0);
 export const selectSubtotal = (s: RootState) =>
   s.cart.items.reduce((n, i) => n + i.price * i.qty, 0);
+export const selectPromoCode = (s: RootState) => s.cart.promoCode;
+export const selectDiscountRate = (s: RootState) => s.cart.discountRate;
 export { STORAGE_KEY };
