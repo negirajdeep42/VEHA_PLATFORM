@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veha — Home preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --noir:#0B0B0C; --noir-2:#100F0D; --noir-3:#171511;
+    --gold-l:#F8EAB8; --gold:#D9B85C; --gold-2:#C49B3F; --gold-d:#9A7026;
+    --cream:#ECE4D2; --cream-soft:#A79E8A; --cream-dim:#7C7461;
+    --line:rgba(217,184,92,.16); --line-2:rgba(217,184,92,.30);
+    --disp:'Cinzel',Georgia,serif; --edi:'Cormorant Garamond',Georgia,serif; --sans:'Jost',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--sans);background:var(--noir);color:var(--cream);font-weight:300;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+  .gold-text{background:linear-gradient(180deg,#F8EAB8,#C49B3F 64%,#9A7026);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  .announce{background:#070707;border-bottom:1px solid var(--line);height:40px;display:flex;align-items:center;justify-content:center}
+  .announce span{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-2)}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(11,11,12,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .nav{height:88px;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;flex-direction:column;align-items:center;line-height:1}
+  .brand .nm{font-family:var(--disp);font-size:26px;font-weight:600;letter-spacing:.22em;padding-left:.22em}
+  .brand .sub{font-size:8px;letter-spacing:.5em;text-transform:uppercase;color:var(--gold-d);margin-top:3px;padding-left:.5em}
+  .crown{width:30px;height:18px;margin-bottom:3px}
+  .crown path,.crown rect,.crown circle{fill:url(#gd)}
+  .menu{display:flex;gap:34px;list-style:none}
+  .menu a{font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream);transition:.3s}
+  .menu a:hover{color:var(--gold)}
+  .icons{display:flex;gap:20px;align-items:center}
+  .icons a,.icons button{background:none;border:none;color:var(--cream);cursor:pointer;display:flex;position:relative;transition:.3s}
+  .icons a:hover,.icons button:hover{color:var(--gold)}
+  .icons svg{width:20px;height:20px}
+  .cc{position:absolute;top:-7px;right:-9px;min-width:16px;height:16px;padding:0 4px;border-radius:9px;background:linear-gradient(135deg,#E8CC76,#C49B3F);color:#1A1408;font-size:9px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  .burger{display:none}
+
+  .hero{position:relative;overflow:hidden;background:radial-gradient(ellipse 70% 80% at 50% 0%,#1A140C,#0B0B0C 72%)}
+  .jhumka{position:absolute;top:48px;width:320px;opacity:.16;filter:blur(1px);pointer-events:none;user-select:none}
+  .jhumka.l{left:-40px}
+  .jhumka.r{right:-40px;transform:scaleX(-1)}
+  .glow{position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(217,184,92,.10),transparent 55%);pointer-events:none}
+  .arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:20;background:none;border:none;color:var(--cream-soft);cursor:pointer;transition:.3s}
+  .arrow:hover{color:var(--gold)}
+  .arrow svg{width:28px;height:28px}
+  .arrow.l{left:28px}.arrow.r{right:28px}
+  .hero-in{position:relative;z-index:10;text-align:center;padding:120px 28px}
+  .hcrown{width:36px;height:22px;margin:0 auto 24px}
+  .hcrown path,.hcrown rect{fill:url(#gd)}
+  .wordmark{font-family:var(--disp);font-weight:700;line-height:1;letter-spacing:.12em;padding-left:.12em;font-size:clamp(72px,16vw,190px);
+    background:linear-gradient(100deg,#9A7026 0%,#F8EAB8 22%,#FFFDF5 32%,#F8EAB8 42%,#C49B3F 58%,#9A7026 78%);
+    background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite}
+  .wsub{font-size:clamp(11px,1.4vw,14px);letter-spacing:.62em;text-transform:uppercase;color:var(--gold-d);margin-top:6px;padding-left:.62em}
+  .divider{width:48px;height:1px;margin:28px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .tagline{font-family:var(--edi);font-style:italic;font-size:clamp(24px,4vw,40px);color:var(--cream);max-width:760px;margin:0 auto}
+  .subline{color:var(--cream-soft);font-size:clamp(14px,1.6vw,16px);max-width:520px;margin:16px auto 0;min-height:48px}
+  .cta{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:36px}
+  .btn{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;padding:16px 36px;cursor:pointer;transition:.4s;border:1px solid transparent;display:inline-flex;align-items:center}
+  .btn.solid{background:linear-gradient(135deg,#E8CC76,#C49B3F);color:#1A1408}
+  .btn.solid:hover{background:linear-gradient(135deg,#F8EAB8,#D9B85C)}
+  .btn.line{color:var(--gold);border-color:var(--line-2)}
+  .btn.line:hover{border-color:var(--gold);color:var(--gold-l)}
+  .dots{display:flex;justify-content:center;gap:10px;margin-top:40px}
+  .dot{height:6px;width:6px;border-radius:3px;background:var(--line-2);border:none;cursor:pointer;transition:.3s}
+  .dot.on{width:28px;background:var(--gold)}
+  .fade{animation:fade .6s ease both}
+
+  .cats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:64px 0}
+  .cat{border:1px solid var(--line);padding:36px 0;text-align:center;transition:.3s}
+  .cat:hover{border-color:var(--gold-2)}
+  .cat .nm{font-family:var(--edi);font-size:24px;color:var(--cream);transition:.3s}
+  .cat:hover .nm{color:var(--gold-l)}
+  .cat .ex{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim);margin-top:4px}
+
+  .sec-head{text-align:center;margin-bottom:40px}
+  .sec-head .eye{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-2);display:block;margin-bottom:12px}
+  .sec-head h2{font-family:var(--disp);font-size:clamp(26px,3.4vw,40px);letter-spacing:.08em}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-bottom:48px}
+  .card{background:var(--noir-2);border:1px solid var(--line);transition:.4s}
+  .card:hover{transform:translateY(-7px);border-color:var(--line-2)}
+  .ph{aspect-ratio:1;background:radial-gradient(circle at 50% 40%,#241F14,#0C0B09);overflow:hidden}
+  .ph svg{width:100%;height:100%;transition:.5s}
+  .card:hover .ph svg{transform:scale(1.06)}
+  .info{padding:18px 18px 22px}
+  .info .nm{font-family:var(--edi);font-size:22px;color:var(--cream)}
+  .info .meta{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);margin:5px 0 11px}
+  .price .now{font-size:15px;font-weight:500;color:var(--gold)}
+  .price .was{font-size:12px;color:var(--cream-dim);text-decoration:line-through;margin-left:8px}
+  .center{text-align:center;padding-bottom:80px}
+
+  footer{border-top:1px solid var(--line);padding:48px 0}
+  .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .foot small{color:var(--cream-dim);font-size:12px}
+
+  @keyframes shine{to{background-position:200% center}}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media(max-width:900px){.menu,.icons .lg{display:none}.cats,.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F8EAB8"/><stop offset=".45" stop-color="#D9B85C"/><stop offset=".72" stop-color="#B98E36"/><stop offset="1" stop-color="#8E6A22"/></linearGradient>
+  <linearGradient id="gold-h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBF0CB"/><stop offset=".3" stop-color="#E3C46A"/><stop offset=".55" stop-color="#C49B3F"/><stop offset=".8" stop-color="#EAD081"/><stop offset="1" stop-color="#8E6A22"/></linearGradient>
+  <radialGradient id="gem" cx="40%" cy="32%" r="78%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".26" stop-color="#FBF0CB"/><stop offset=".62" stop-color="#E3C46A"/><stop offset="1" stop-color="#9A7026"/></radialGradient>
+  <radialGradient id="diamond" cx="42%" cy="28%" r="82%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".4" stop-color="#EAF6FF"/><stop offset=".75" stop-color="#C4DCEC"/><stop offset="1" stop-color="#8FB3CE"/></radialGradient>
+  <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+</defs></svg>
+
+<div class="announce"><span id="ann">BIS-hallmarked gold &amp; 925 silver</span></div>
+
+<header><div class="wrap nav">
+  <a class="brand" href="index.html">
+    <svg class="crown" viewBox="0 0 100 56"><path d="M16 46 L13 21 L32 34 L50 12 L68 34 L87 21 L84 46 Z"/><rect x="15" y="45" width="70" height="8" rx="1"/></svg>
+    <span class="nm gold-text">VEHA</span><span class="sub">Jewelry</span>
+  </a>
+  <nav><ul class="menu">
+    <li><a href="http://localhost:5173/">Shop</a></li><li><a href="#bestsellers">Bestsellers</a></li><li><a href="collections-preview.html">Collections</a></li><li><a href="house-preview.html">The House</a></li><li><a href="house-preview.html#contact">Contact</a></li>
+  </ul></nav>
+  <div class="icons">
+    <button class="lg" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+    <button class="lg" aria-label="Account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></button>
+    <button class="lg" aria-label="Wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7-4.4-9.3-9C1 7.7 3 4.5 6.2 4.5c2 0 3.3 1.2 4.1 2.4l1.7 2 1.7-2c.8-1.2 2.1-2.4 4.1-2.4 3.2 0 5.2 3.2 3.5 6.5C19 15.6 12 20 12 20Z"/></svg></button>
+    <a href="#" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 8h12l-1.2 11.2A2 2 0 0 1 14.8 21H9.2A2 2 0 0 1 7.2 19.2L6 8Z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></svg><span class="cc">0</span></a>
+  </div>
+</div></header>
+
+<section class="hero">
+  <svg class="jhumka l" viewBox="0 0 120 230" id="jhumka-l"></svg>
+  <svg class="jhumka r" viewBox="0 0 120 230" id="jhumka-r"></svg>
+  <div class="glow"></div>
+  <button class="arrow l" id="prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="arrow r" id="next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 5l7 7-7 7"/></svg></button>
+
+  <div class="hero-in">
+    <svg class="hcrown" viewBox="0 0 100 56"><path d="M16 46 L13 21 L32 34 L50 12 L68 34 L87 21 L84 46 Z"/><rect x="15" y="45" width="70" height="8" rx="1"/></svg>
+    <h1 class="wordmark">VEHA</h1>
+    <div class="wsub">Jewelry</div>
+    <div class="divider"></div>
+    <p class="tagline" id="tag">Heirloom craft, made for the everyday.</p>
+    <p class="subline" id="sub">BIS-hallmarked gold and 925 sterling silver, finished by hand and kept brilliant for life.</p>
+    <div class="cta">
+      <a class="btn solid" href="http://localhost:5173/">Shop the collection</a>
+      <a class="btn line" href="house-preview.html">The Veha story</a>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="cats">
+    <a class="cat" href="#"><span class="nm">Rings</span><span class="ex">Explore &rarr;</span></a>
+    <a class="cat" href="#"><span class="nm">Earrings</span><span class="ex">Explore &rarr;</span></a>
+    <a class="cat" href="#"><span class="nm">Necklaces</span><span class="ex">Explore &rarr;</span></a>
+    <a class="cat" href="#"><span class="nm">Bracelets</span><span class="ex">Explore &rarr;</span></a>
+  </section>
+
+  <div class="sec-head" id="bestsellers"><span class="eye">Loved by many</span><h2 class="gold-text">Bestsellers</h2></div>
+  <section class="grid">
+    <div class="card"><div class="ph"><svg viewBox="0 0 200 200"><ellipse cx="100" cy="160" rx="64" ry="11" fill="#000" opacity=".45" filter="url(#soft)"/><path fill="url(#gold-h)" fill-rule="evenodd" d="M40,98 A60,56 0 1 0 160,98 A60,56 0 1 0 40,98 Z M58,98 A42,38 0 1 1 142,98 A42,38 0 1 1 58,98 Z"/><path d="M100,28 L112,44 L100,60 L88,44 Z" fill="url(#diamond)"/></svg></div><div class="info"><div class="nm">Aria Wave Cuff</div><div class="meta">Bracelet &middot; gold</div><div class="price"><span class="now">&#8377;1,425</span><span class="was">&#8377;2,499</span></div></div></div>
+    <div class="card"><div class="ph"><svg viewBox="0 0 200 200"><ellipse cx="100" cy="166" rx="46" ry="9" fill="#000" opacity=".45" filter="url(#soft)"/><path fill="url(#gold-h)" fill-rule="evenodd" d="M54,122 A46,46 0 1 0 146,122 A46,46 0 1 0 54,122 Z M67,122 A33,33 0 1 1 133,122 A33,33 0 1 1 67,122 Z"/><path d="M88,76 L112,76 L106,90 L94,90 Z" fill="url(#gold-h)"/><path d="M100,24 L122,46 L100,72 L78,46 Z" fill="url(#diamond)"/></svg></div><div class="info"><div class="nm">Lumen Solitaire</div><div class="meta">Ring &middot; gold</div><div class="price"><span class="now">&#8377;1,899</span><span class="was">&#8377;2,999</span></div></div></div>
+    <div class="card"><div class="ph"><svg viewBox="0 0 200 200"><circle cx="68" cy="54" r="6" fill="none" stroke="url(#gold-h)" stroke-width="3"/><path d="M68,62 C44,80 44,120 68,138 C92,120 92,80 68,62 Z" fill="url(#gold-h)"/><path d="M68,72 C50,86 50,116 68,130 C86,116 86,86 68,72 Z" fill="url(#gem)"/><circle cx="132" cy="54" r="6" fill="none" stroke="url(#gold-h)" stroke-width="3"/><path d="M132,62 C108,80 108,120 132,138 C156,120 156,80 132,62 Z" fill="url(#gold-h)"/><path d="M132,72 C114,86 114,116 132,130 C150,116 150,86 132,72 Z" fill="url(#gem)"/></svg></div><div class="info"><div class="nm">Seraphine Drops</div><div class="meta">Earrings &middot; pair</div><div class="price"><span class="now">&#8377;1,650</span><span class="was">&#8377;2,799</span></div></div></div>
+    <div class="card"><div class="ph"><svg viewBox="0 0 200 200"><path d="M38,44 Q100,150 162,44" fill="none" stroke="url(#gold-h)" stroke-width="5" stroke-linecap="round"/><circle cx="100" cy="122" r="6" fill="none" stroke="url(#gold-h)" stroke-width="3"/><path d="M100,130 C84,144 84,168 100,178 C116,168 116,144 100,130 Z" fill="url(#gold-h)"/><path d="M100,138 C88,150 88,166 100,172 C112,166 112,150 100,138 Z" fill="url(#diamond)"/></svg></div><div class="info"><div class="nm">Mira Pendant Chain</div><div class="meta">Necklace &middot; 18in</div><div class="price"><span class="now">&#8377;2,150</span><span class="was">&#8377;3,499</span></div></div></div>
+  </section>
+  <div class="center"><a class="btn line" href="http://localhost:5173/">View all jewellery</a></div>
+</div>
+
+<footer><div class="wrap foot">
+  <span class="nm gold-text" style="font-family:var(--disp);font-size:20px;letter-spacing:.2em">VEHA</span>
+  <small>&copy; 2026 Veha Jewelry. Hallmarked &amp; hand-finished.</small>
+</div></footer>
+
+<script>
+  // build the decorative jhumka SVG (same shape as the React <Jhumka/>)
+  function jhumkaMarkup(){
+    var drops=[30,42,54,66,78,90], inner='';
+    inner+='<circle cx="60" cy="12" r="5" fill="url(#gold-h)"/><circle cx="60" cy="12" r="2.2" fill="url(#diamond)"/>';
+    inner+='<path d="M60 17 L60 30" stroke="url(#gold-h)" stroke-width="2"/>';
+    inner+='<path d="M38 46 Q60 22 82 46 Z" fill="url(#gold-h)"/><ellipse cx="60" cy="47" rx="27" ry="5" fill="url(#gold-h)"/>';
+    inner+='<path d="M33 48 Q60 100 87 48 Z" fill="url(#gold-h)"/><path d="M40 50 Q60 88 80 50 Z" fill="url(#gem)" opacity="0.55"/>';
+    inner+='<circle cx="60" cy="64" r="6" fill="url(#diamond)"/>';
+    drops.forEach(function(x,idx){
+      var len=18+Math.round(14*Math.sin((idx/(drops.length-1))*Math.PI));
+      var topY=78-Math.round(10*Math.sin((idx/(drops.length-1))*Math.PI));
+      inner+='<line x1="'+x+'" y1="'+topY+'" x2="'+x+'" y2="'+(topY+len)+'" stroke="url(#gold-h)" stroke-width="1.4"/>';
+      inner+='<path d="M'+x+' '+(topY+len)+' q5 6 0 12 q-5 -6 0 -12" fill="url(#gem)"/>';
+      inner+='<circle cx="'+x+'" cy="'+(topY+len+14)+'" r="3.2" fill="url(#gold-h)"/>';
+    });
+    return inner;
+  }
+  document.getElementById('jhumka-l').innerHTML=jhumkaMarkup();
+  document.getElementById('jhumka-r').innerHTML=jhumkaMarkup();
+
+  // announce rotation
+  var ANN=['BIS-hallmarked gold & 925 silver','Complimentary shipping over \u20B9999','30-day easy returns','Lifetime polish & care'];
+  var ai=0; setInterval(function(){ai=(ai+1)%ANN.length;document.getElementById('ann').textContent=ANN[ai];},3200);
+
+  // hero carousel
+  var SLIDES=[
+    {tag:'Heirloom craft, made for the everyday.',sub:'BIS-hallmarked gold and 925 sterling silver, finished by hand and kept brilliant for life.'},
+    {tag:'Pieces you\u2019ll never take off.',sub:'Comfort-fit, hand-finished, and made to live in \u2014 morning to midnight.'},
+    {tag:'The new Royal Edit.',sub:'Statement gold for the moments that deserve a little more.'}
+  ];
+  var slide=0, tag=document.getElementById('tag'), sub=document.getElementById('sub'), dots=document.getElementById('dots');
+  SLIDES.forEach(function(_,idx){var b=document.createElement('button');b.className='dot'+(idx===0?' on':'');b.onclick=function(){set(idx);};dots.appendChild(b);});
+  function set(i){
+    slide=(i+SLIDES.length)%SLIDES.length;
+    tag.textContent=SLIDES[slide].tag; sub.textContent=SLIDES[slide].sub;
+    tag.classList.remove('fade'); void tag.offsetWidth; tag.classList.add('fade');
+    Array.prototype.forEach.call(dots.children,function(d,idx){d.className='dot'+(idx===slide?' on':'');});
+  }
+  document.getElementById('prev').onclick=function(){set(slide-1);};
+  document.getElementById('next').onclick=function(){set(slide+1);};
+  setInterval(function(){set(slide+1);},6000);
+</script>
+</body>
+</html>

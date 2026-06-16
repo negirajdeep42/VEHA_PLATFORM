@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veha — Collections preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--noir:#0B0B0C;--noir-2:#100F0D;--gold-l:#F8EAB8;--gold:#D9B85C;--gold-2:#C49B3F;--gold-d:#9A7026;--cream:#ECE4D2;--cream-soft:#A79E8A;--cream-dim:#7C7461;--line:rgba(217,184,92,.16);--line-2:rgba(217,184,92,.30);--disp:'Cinzel',serif;--edi:'Cormorant Garamond',serif;--sans:'Jost',sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--sans);background:var(--noir);color:var(--cream);font-weight:300;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+  .gold-text{background:linear-gradient(180deg,#F8EAB8,#C49B3F 64%,#9A7026);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .crown path,.crown rect{fill:url(#gd)}
+  header{position:sticky;top:0;z-index:50;background:rgba(11,11,12,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .nav{height:80px;display:flex;align-items:center;justify-content:space-between}
+  .brand{display:flex;flex-direction:column;align-items:center;line-height:1}
+  .brand .nm{font-family:var(--disp);font-size:24px;font-weight:600;letter-spacing:.22em;padding-left:.22em}
+  .brand .sub{font-size:8px;letter-spacing:.5em;text-transform:uppercase;color:var(--gold-d);margin-top:3px}
+  .crown{width:28px;height:16px;margin-bottom:3px}
+  .menu{display:flex;gap:30px;list-style:none}
+  .menu a{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream);transition:.3s}
+  .menu a:hover,.menu a.on{color:var(--gold)}
+  .hero{text-align:center;padding:64px 28px;background:radial-gradient(ellipse 70% 100% at 50% 0%,#1A140C,#0B0B0C 72%);border-bottom:1px solid var(--line)}
+  .hero .eye{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-2);display:block;margin-bottom:12px}
+  .hero h1{font-family:var(--disp);font-size:clamp(38px,6vw,64px);letter-spacing:.08em}
+  .hero p{color:var(--cream-soft);max-width:520px;margin:16px auto 0}
+  .rows{padding:64px 0;display:flex;flex-direction:column;gap:64px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .row:nth-child(even) .art{order:2}
+  .art{position:relative;aspect-ratio:4/3;background:radial-gradient(circle at 50% 40%,#241F14,#0C0B09);border:1px solid var(--line)}
+  .art .fr{position:absolute;inset:20px;border:1px solid var(--line-2)}
+  .art svg{position:absolute;inset:0;width:60%;height:60%;margin:auto}
+  .row .eye{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-2);margin-bottom:14px}
+  .row h2{font-family:var(--edi);font-size:clamp(32px,4vw,48px);color:var(--cream);margin-bottom:14px}
+  .row p{color:var(--cream-soft);max-width:440px;margin-bottom:26px;line-height:1.7}
+  .btn{display:inline-flex;font-size:11px;letter-spacing:.22em;text-transform:uppercase;padding:14px 32px;border:1px solid var(--line-2);color:var(--gold);transition:.3s}
+  .btn:hover{border-color:var(--gold);color:var(--gold-l)}
+  .btn.solid{background:linear-gradient(135deg,#E8CC76,#C49B3F);color:#1A1408;border-color:transparent}
+  .sec-head{text-align:center;margin-bottom:40px}
+  .sec-head .eye{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--gold-2);display:block;margin-bottom:12px}
+  .sec-head h2{font-family:var(--disp);font-size:clamp(26px,3.4vw,38px);letter-spacing:.08em}
+  .catg{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding-bottom:64px}
+  .cat{border:1px solid var(--line);transition:.3s}
+  .cat:hover{border-color:var(--gold-2)}
+  .cat .ph{aspect-ratio:1;background:radial-gradient(circle at 50% 40%,#241F14,#0C0B09);overflow:hidden}
+  .cat .ph svg{width:100%;height:100%;transition:.5s}
+  .cat:hover .ph svg{transform:scale(1.06)}
+  .cat .nm{font-family:var(--edi);font-size:20px;color:var(--cream);text-align:center;padding:16px 0;display:block}
+  @media(max-width:860px){.menu{display:none}.row{grid-template-columns:1fr}.row:nth-child(even) .art{order:0}.catg{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F8EAB8"/><stop offset=".45" stop-color="#D9B85C"/><stop offset=".72" stop-color="#B98E36"/><stop offset="1" stop-color="#8E6A22"/></linearGradient>
+  <linearGradient id="gold-h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBF0CB"/><stop offset=".3" stop-color="#E3C46A"/><stop offset=".55" stop-color="#C49B3F"/><stop offset=".8" stop-color="#EAD081"/><stop offset="1" stop-color="#8E6A22"/></linearGradient>
+  <radialGradient id="gem" cx="40%" cy="32%" r="78%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".26" stop-color="#FBF0CB"/><stop offset=".62" stop-color="#E3C46A"/><stop offset="1" stop-color="#9A7026"/></radialGradient>
+  <radialGradient id="diamond" cx="42%" cy="28%" r="82%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".4" stop-color="#EAF6FF"/><stop offset=".75" stop-color="#C4DCEC"/><stop offset="1" stop-color="#8FB3CE"/></radialGradient>
+</defs></svg>
+
+<header><div class="wrap nav">
+  <a class="brand" href="index.html"><svg class="crown" viewBox="0 0 100 56"><path d="M16 46 L13 21 L32 34 L50 12 L68 34 L87 21 L84 46 Z"/><rect x="15" y="45" width="70" height="8" rx="1"/></svg><span class="nm gold-text">VEHA</span><span class="sub">Jewelry</span></a>
+  <nav><ul class="menu"><li><a href="http://localhost:5173/">Shop</a></li><li><a href="index.html#bestsellers">Bestsellers</a></li><li><a href="collections-preview.html" class="on">Collections</a></li><li><a href="house-preview.html">The House</a></li><li><a href="house-preview.html#contact">Contact</a></li></ul></nav>
+  <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-soft)">Cart (0)</span>
+</div></header>
+
+<section class="hero">
+  <span class="eye">Curated by Veha</span>
+  <h1 class="gold-text">Collections</h1>
+  <p>Edits put together by hand, for the way you actually wear jewellery.</p>
+</section>
+
+<div class="wrap">
+  <div class="rows">
+    <div class="row">
+      <div class="art"><div class="fr"></div><svg viewBox="0 0 200 200"><path d="M38,44 Q100,150 162,44" fill="none" stroke="url(#gold-h)" stroke-width="5" stroke-linecap="round"/><circle cx="100" cy="122" r="6" fill="none" stroke="url(#gold-h)" stroke-width="3"/><path d="M100,130 C84,144 84,168 100,178 C116,168 116,144 100,130 Z" fill="url(#gold-h)"/><path d="M100,138 C88,150 88,166 100,172 C112,166 112,150 100,138 Z" fill="url(#diamond)"/></svg></div>
+      <div><div class="eye">Edit 01</div><h2>The Royal Edit</h2><p>Statement gold with brilliant-cut stones &mdash; for the moments that ask for a little more.</p><a class="btn" href="#">Explore the edit</a></div>
+    </div>
+    <div class="row">
+      <div class="art"><div class="fr"></div><svg viewBox="0 0 200 200"><path fill="url(#gold-h)" fill-rule="evenodd" d="M54,122 A46,46 0 1 0 146,122 A46,46 0 1 0 54,122 Z M67,122 A33,33 0 1 1 133,122 A33,33 0 1 1 67,122 Z"/><path d="M100,24 L122,46 L100,72 L78,46 Z" fill="url(#diamond)"/></svg></div>
+      <div><div class="eye">Edit 02</div><h2>Everyday Essentials</h2><p>Light, comfort-fit pieces you can wear from morning coffee to midnight, and never take off.</p><a class="btn" href="#">Explore the edit</a></div>
+    </div>
+    <div class="row">
+      <div class="art"><div class="fr"></div><svg viewBox="0 0 200 200"><circle cx="70" cy="92" r="34" fill="none" stroke="url(#gold-h)" stroke-width="7"/><circle cx="130" cy="92" r="34" fill="none" stroke="url(#gold-h)" stroke-width="7"/></svg></div>
+      <div><div class="eye">Edit 03</div><h2>The Silver Line</h2><p>Cool-toned 925 sterling silver &mdash; quiet, modern, and endlessly easy to layer.</p><a class="btn" href="#">Explore the edit</a></div>
+    </div>
+  </div>
+
+  <div class="sec-head"><span class="eye">Browse</span><h2 class="gold-text">Shop by category</h2></div>
+  <div class="catg">
+    <a class="cat" href="#"><div class="ph"><svg viewBox="0 0 200 200"><path fill="url(#gold-h)" fill-rule="evenodd" d="M54,122 A46,46 0 1 0 146,122 A46,46 0 1 0 54,122 Z M67,122 A33,33 0 1 1 133,122 A33,33 0 1 1 67,122 Z"/><path d="M100,24 L122,46 L100,72 L78,46 Z" fill="url(#diamond)"/></svg></div><span class="nm">Rings</span></a>
+    <a class="cat" href="#"><div class="ph"><svg viewBox="0 0 200 200"><circle cx="68" cy="54" r="6" fill="none" stroke="url(#gold-h)" stroke-width="3"/><path d="M68,62 C44,80 44,120 68,138 C92,120 92,80 68,62 Z" fill="url(#gold-h)"/><path d="M68,72 C50,86 50,116 68,130 C86,116 86,86 68,72 Z" fill="url(#gem)"/><circle cx="132" cy="54" r="6" fill="none" stroke="url(#gold-h)" stroke-width="3"/><path d="M132,62 C108,80 108,120 132,138 C156,120 156,80 132,62 Z" fill="url(#gold-h)"/><path d="M132,72 C114,86 114,116 132,130 C150,116 150,86 132,72 Z" fill="url(#gem)"/></svg></div><span class="nm">Earrings</span></a>
+    <a class="cat" href="#"><div class="ph"><svg viewBox="0 0 200 200"><path d="M38,44 Q100,150 162,44" fill="none" stroke="url(#gold-h)" stroke-width="5" stroke-linecap="round"/><path d="M100,130 C84,144 84,168 100,178 C116,168 116,144 100,130 Z" fill="url(#gold-h)"/></svg></div><span class="nm">Necklaces</span></a>
+    <a class="cat" href="#"><div class="ph"><svg viewBox="0 0 200 200"><path fill="url(#gold-h)" fill-rule="evenodd" d="M40,98 A60,56 0 1 0 160,98 A60,56 0 1 0 40,98 Z M58,98 A42,38 0 1 1 142,98 A42,38 0 1 1 58,98 Z"/><path d="M100,28 L112,44 L100,60 L88,44 Z" fill="url(#diamond)"/></svg></div><span class="nm">Bracelets</span></a>
+  </div>
+</div>
+</body>
+</html>
